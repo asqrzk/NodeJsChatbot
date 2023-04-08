@@ -4,20 +4,27 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const client = new Client({
   //authStrategy: new LocalAuth(),
   puppeteer: {
-    args: ['--no-sandbox'],
+    args: ['--no-sandbox','--disable-setuid-sandbox'],
+    
 }
 });
 
+console.log("Client created");
+
 
 client.initialize();
+
+console.log("Client Initialized");
 
 client.on('qr', (qr) => {
   qrcode.generate(qr, { small: true });
 });
 
-client.on('authenticated', () => {
-  console.log('AUTHENTICATED');
-});
+console.log("Qr generated");
+
+// client.on('authenticated', () => {
+//   console.log('AUTHENTICATED');
+// });
 
 client.on('ready', () => {
   console.log('Client is ready!');
