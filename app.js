@@ -2,41 +2,34 @@ const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 
 const client = new Client({
-  authStrategy: new LocalAuth(),
+//   authStrategy: new LocalAuth(),
   puppeteer: {
     args: ['--no-sandbox','--disable-setuid-sandbox'],
     
 }
 });
 
-let flag = true;
 
-console.log("Client created");
 
 
 client.initialize();
 
-console.log("Client Initialized");
-
 client.on('qr', (qr) => {
-    if(flag==true)
-    {
-        qrcode.generate(qr, { small: true });
-        flag = false;
-    }
+  qrcode.generate(qr, { small: true });
+      
 });
 
-console.log("Qr generated");
 
-client.on('authenticated', () => {
-  console.log('AUTHENTICATED');
-});
+
+// client.on('authenticated', () => {
+//   console.log('AUTHENTICATED');
+// });
 
 client.on('ready', () => {
   console.log('Client is ready!');
 });
 
-console.log("after client ready code");
+
 
 client.on('message', async (message) => {
   if (message.body === 'hello') {
@@ -81,7 +74,6 @@ client.on('message', async (message) => {
     });
   }
 
-  console.log("End of code rchd");
 
 });
 
