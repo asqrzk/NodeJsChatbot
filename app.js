@@ -2,12 +2,14 @@ const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 
 const client = new Client({
-  //authStrategy: new LocalAuth(),
+  authStrategy: new LocalAuth(),
   puppeteer: {
     args: ['--no-sandbox','--disable-setuid-sandbox'],
     
 }
 });
+
+let flag = true;
 
 console.log("Client created");
 
@@ -17,18 +19,24 @@ client.initialize();
 console.log("Client Initialized");
 
 client.on('qr', (qr) => {
-  qrcode.generate(qr, { small: true });
+    if(flag==true)
+    {
+        qrcode.generate(qr, { small: true });
+        flag = false;
+    }
 });
 
 console.log("Qr generated");
 
-// client.on('authenticated', () => {
-//   console.log('AUTHENTICATED');
-// });
+client.on('authenticated', () => {
+  console.log('AUTHENTICATED');
+});
 
 client.on('ready', () => {
   console.log('Client is ready!');
 });
+
+console.log("after client ready code");
 
 client.on('message', async (message) => {
   if (message.body === 'hello') {
@@ -72,6 +80,8 @@ client.on('message', async (message) => {
       caption: 'Boys Tees',
     });
   }
+
+  console.log("End of code rchd");
 
 });
 
